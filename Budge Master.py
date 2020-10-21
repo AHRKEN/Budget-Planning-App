@@ -7,7 +7,6 @@ Authors: Gabriel Martinez and Estalin Martinez
 Date: Oct 18, 2019
 """
 
-# Hola
 
 import introcs
 import numpy as np
