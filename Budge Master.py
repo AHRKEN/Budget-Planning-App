@@ -16,34 +16,33 @@ while flag:
 
     if user_money > 0:
         prompt = input("Do you want to add (+) or substract (-) from your account? ")
-        introcs.isfloat(prompt)
 
         if prompt == "+":
-            adding_money = np.round(input('How much do you want to add to your account? '), 2)
-            user_money += float(adding_money)
-            print("Now you have $" + str(user_money) + " in your account.\n")
+            adding_money = float(input('How much do you want to add to your account? '))
+            user_money += format(adding_money, '.6f')
+            print("Now you have $" + str(format(user_money, '.2f')) + " in your account.\n ")
 
         elif prompt == "-":
-
-            substracting_money = np.round(input('How much do want to substract from your account? '), 2)
-            user_money -= float(substracting_money)
-            print("Now you have $" + str(user_money) + " in your account.\n")
+            substracting_money = float(input('How much do want to substract from your account? '))
+            user_money -= np.round(substracting_money, 2)
+            print("Now you have $" + str(user_money) + " in your account.\n ")
 
         else:
-            print("You wrote something that is not this symbol (+) of this symbol (-). \n")
+            print("You wrote something that is not this symbol (+) of this symbol (-). \n Please try again. ")
 
     else:
-        prompt = input("Do you want to add to your account? ")
+        prompt = input("Do you want to add to your account? Yes or No?\n ")
         if prompt.title() == "Yes":
-            adding_money = np.round(input('How much do you want to add to your account? '), 2)
-            user_money += float(adding_money)
-            print("Now you have $" + str(user_money) + " in your account.\n")
+            adding_money = float(input('How much do you want to add to your account?\n '))
+            user_money += np.round(adding_money, 2)
+            print("Now you have $" + str(user_money) + " in your account.\n ")
 
-        elif type(prompt) == type(int) or type(float):
-            print("You typed something that are not words. ")
+        elif prompt.title() == 'No':
+            flag = False
+
+            print("Thanks for using Budge Master. Where managing your money is easier than chewing gum! ;) ")
 
         else:
-            keep_up = input("Type 'yes' if you want to add money to your account. If not, type No.")
-            if keep_up.title() == "No":
-                flag = False
-                print("Bye!")
+            print("Please type 'yes' to add money to your account or 'no' to exit the app. \n ")
+
+
