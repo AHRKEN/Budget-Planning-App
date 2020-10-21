@@ -6,8 +6,6 @@ This is an app for budget management.
 Authors: Gabriel Martinez and Estalin Martinez
 Date: Oct 18, 2019
 """
-
-
 import introcs
 import numpy as np
 
