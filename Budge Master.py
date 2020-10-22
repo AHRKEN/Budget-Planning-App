@@ -6,8 +6,9 @@ This is an app for budget management.
 Authors: Gabriel Martinez and Estalin Martinez
 Date: Oct 18, 2019
 """
-import introcs
-import numpy as np
+
+
+import app_functions
 
 flag = True
 user_money = 0
@@ -19,20 +20,10 @@ while flag:
                        " Or do you want to exit app? (quit) \n ")
 
         if prompt == "+":
-            try:
-                adding_money = float(input('How much do you want to add to your account? \n '))
-                user_money += adding_money
-                print("Now you have $" + str(user_money) + " in your account.\n ")
-            except:
-                print("Oh! Seems like you've entered something that is not a number. \n Please try again.\n")
+            user_money = app_functions.add_to_acct(user_money)
 
         elif prompt == "-":
-            try:
-                substracting_money = float(input('How much do want to substract from your account? \n '))
-                user_money -= substracting_money
-                print("Now you have $" + str(user_money) + " in your account.\n ")
-            except:
-                print("Oh! Seems like you've entered something that is not a number. \n Please try again. \n")
+            user_money = app_functions.debit_from_acct(user_money)
 
         elif prompt.title() == 'Quit':
             flag = False
@@ -44,14 +35,7 @@ while flag:
     else:
         prompt = input("Do you want to add to your account? Yes or No?\n ")
         if prompt.title() == "Yes":
-            try:
-                adding_money = float(input('How much do you want to add to your account?\n '))
-                user_money += adding_money
-                print("Now you have $" + str(user_money) + " in your account.\n")
-            except:
-                print("Oh! Seems like you've entered something that is not a number. \n Please try again. \n")
-                # Here the flow is supposed to go to the line 46 to ask the user again about the amount he want to enter.
-                # We can then, separate the code in functions so we can recall the process as needed.
+            user_money = app_functions.add_to_acct(user_money)
 
         elif prompt.title() == 'No':
             flag = False
