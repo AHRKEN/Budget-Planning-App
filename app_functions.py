@@ -2,7 +2,6 @@
 This file contains the functions of Budge Master App
 """
 
-# Hi
 
 def add_to_acct(user_money):
     try:
