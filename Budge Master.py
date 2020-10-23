@@ -16,6 +16,9 @@ user_money = 0
 while flag:
 
     if user_money > 0:
+        """ The answer to the next question have to be (+), (-) or the string "quit" in order to work
+        properly. 
+        """
         prompt = input("Do you want to add (+) or substract (-) from your account?"
                        " Or do you want to exit app? (quit) \n ")
 
@@ -26,6 +29,7 @@ while flag:
             user_money = app_functions.debit_from_acct(user_money)
 
         elif prompt.title() == 'Quit':
+            """If the user enters 'quit', the main while loop stops."""
             flag = False
             print("Thanks for using Budge Master. Where managing your money is easier than chewing gum! ;) ")
 
@@ -38,6 +42,7 @@ while flag:
             user_money = app_functions.add_to_acct(user_money)
 
         elif prompt.title() == 'No':
+            """If the user enters 'no', the main while loop stops."""
             flag = False
 
             print("Thanks for using Budge Master. Where managing your money is easier than chewing gum! ;) ")
