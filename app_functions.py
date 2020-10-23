@@ -2,6 +2,8 @@
 This file contains all the functions of Budge Master App
 """
 
+import pandas as pd
+
 
 def add_to_acct(user_money):
     """
@@ -44,4 +46,43 @@ def debit_from_acct(user_money):
         print("Oh! Seems like you've entered something that is not a number. \n Please try again. \n")
         debit_from_acct(user_money)
         return user_money
+
+
+def repartition(user_money):
+
+    print("How do you want to divide your deposit? \n")
+    mortgage_pymt = float(input("Mortgage payment: "))
+    user_money -= mortgage_pymt
+    car_loan = float(input("Car loan: "))
+    user_money -= car_loan
+    house_maintenance = float(input("House maintenance: "))
+    user_money -= house_maintenance
+    car_maintenance = float(input("Car maintenance: "))
+    user_money -= car_maintenance
+    groceries = float(input("Groceries: "))
+    user_money -= groceries
+    cellphone = float(input("Cellphone: "))
+    user_money -= cellphone
+    health_insurance = float(input("Health insurance: "))
+    user_money -= health_insurance
+    hobbies = float(input("Hobbies: "))
+    user_money -= hobbies
+    hangouts = float(input("Hangouts: "))
+    user_money -= hangouts
+    vacations = float(input("Vacations: "))
+    user_money -= vacations
+    miscellaneous = float(input("Miscellaneous: "))
+    user_money -= miscellaneous
+
+    categories = [mortgage_pymt, car_loan, house_maintenance, car_maintenance, groceries, cellphone, health_insurance,
+                  hobbies, hangouts, vacations, miscellaneous]
+    categ_cols = ['mortgage_pymt', 'car_loan', 'house_maintenance', 'car_maintenance', 'groceries', 'cellphone',
+                       'health_insurance', 'hobbies', 'hangouts', 'vacations', 'miscellaneous']
+
+    d = dict(zip(categ_cols, categories))
+    df = pd.DataFrame(d, index=range(1, 2))
+    print(df)
+    print("You have $" + str(user_money) + " for free spend.")
+    return df
+
 
