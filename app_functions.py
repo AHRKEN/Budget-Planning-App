@@ -1,7 +1,9 @@
 """
 This file contains all the functions of Budge Master App
+All print statements are being used just in the current developing phase for testing and debugging
+purposes.
 """
-
+# Pandas is imported to organize user data on a spreadsheet
 import pandas as pd
 
 
@@ -49,7 +51,13 @@ def debit_from_acct(user_money):
 
 
 def repartition(user_money):
-
+    """
+    This is a function that stores user disbursement (repartition of money) across the different
+    categories. User inputs are going to be cast to floats so they can be subtracted from the user_money
+    variable value.
+    :param user_money: float
+    :return: dataframe of the repartition breakdown
+    """
     print("How do you want to divide your deposit? \n")
 
     mortgage_pymt = float(input("Mortgage payment: "))
@@ -64,18 +72,27 @@ def repartition(user_money):
     vacations = float(input("Vacations: "))
     miscellaneous = float(input("Miscellaneous: "))
 
+    # A list of all user inputs type(strings to floats) stored in each categories list values.
     categories = [mortgage_pymt, car_loan, house_maintenance, car_maintenance, groceries, cellphone, health_insurance,
                   hobbies, hangouts, vacations, miscellaneous]
 
+    # A for loop to subtract each repartition from the main user balance.
     for c in categories:
         user_money -= c
 
+    # A list of names for every column of the dataframe.
     categ_cols = ['mortgage_pymt', 'car_loan', 'house_maintenance', 'car_maintenance', 'groceries', 'cellphone',
-                       'health_insurance', 'hobbies', 'hangouts', 'vacations', 'miscellaneous']
+                  'health_insurance', 'hobbies', 'hangouts', 'vacations', 'miscellaneous']
 
+    # zip method used to cast categories and categ_cols to a dictionary and use this dictionary to cast it
+    # into a dataframe.
     d = dict(zip(categ_cols, categories))
+
+    # Creating the dataframe with pandas. For the moment a dataframe of 1 row and 11 columns.
     df = pd.DataFrame(d, index=range(1, 2))
     print(df)
+
+    # Printing the balance left on user account after repartition.
     print("You have $" + str(user_money) + " for free spend.")
     return df
 

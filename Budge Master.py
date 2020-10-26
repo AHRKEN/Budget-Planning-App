@@ -2,6 +2,8 @@
 Main file for the Budge Master App.
 This is an app for budget management.
 *** This program needs a 64-bit Python interpreter for ram memory advantage and optimization purposes.
+All the print statements are being used just in the current developing phase for testing and
+debugging purposes.
 
 Authors: Gabriel Martinez and Estalin Martinez
 Date: Oct 18, 2019
@@ -11,11 +13,11 @@ Date: Oct 18, 2019
 import app_functions
 
 flag = True
-user_money = 0
+user_money = 0.0
 
 while flag:
 
-    if user_money > 0:
+    if user_money > 0.0:
         """ The answer to the next question have to be (+), (-) or the string "quit" in order to work
         properly. 
         """
