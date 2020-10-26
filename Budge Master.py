@@ -52,8 +52,31 @@ while flag:
             if approve_repartition.title() == 'Yes':
                 app_functions.repartition(user_money)
 
+            elif approve_repartition.title() == 'No':
+                prompt = input("Do you want to add (+) or substract (-) from your account?"
+                               " Or do you want to exit app? (quit) \n ")
+                if prompt == "+":
+                    user_money = app_functions.add_to_acct(user_money)
+
+                elif prompt == "-":
+                    user_money = app_functions.debit_from_acct(user_money)
+                    approve_repartition = input("Do you want to manage your balance? 'yes' or 'no' \n ")
+                    if approve_repartition.title() == 'Yes':
+                        app_functions.repartition(user_money)
+
+                    elif approve_repartition.title() == 'No':
+                        pass
+
+                elif prompt.title() == 'Quit':
+                    """If the user enters 'quit', the main while loop stops."""
+                    flag = False
+                    print("Thanks for using Budge Master. Where managing your money is easier than chewing gum! ;) ")
+
+                else:
+                    print("You wrote something that is not this symbol (+) of this symbol (-). \n Please try again. \n")
+
         elif prompt.title() == 'No':
-            """If the user enters 'no', the main while loop stops."""
+            # If the user enters 'no', the main while loop stops.
             flag = False
 
             print("Thanks for using Budge Master. Where managing your money is easier than chewing gum! ;) ")

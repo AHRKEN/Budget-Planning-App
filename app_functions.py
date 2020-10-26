@@ -59,6 +59,8 @@ def repartition(user_money):
     :return: dataframe of the repartition breakdown
     """
     print("How do you want to divide your deposit? \n")
+    # We should let the user know how much is left on his account balance each time he enters an amount
+    # to a category. Maybe with a for loop.
 
     mortgage_pymt = float(input("Mortgage payment: "))
     car_loan = float(input("Car loan: "))
@@ -78,7 +80,9 @@ def repartition(user_money):
 
     # A for loop to subtract each repartition from the main user balance.
     for c in categories:
+        # We should limit and notify the user when he have not more balance to assign on his account.
         user_money -= c
+
 
     # A list of names for every column of the dataframe.
     categ_cols = ['mortgage_pymt', 'car_loan', 'house_maintenance', 'car_maintenance', 'groceries', 'cellphone',
