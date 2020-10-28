@@ -102,3 +102,7 @@ def repartition(user_money):
 
 
 
+"""
+This file contains the functions of Budge Master App
+"""
+
