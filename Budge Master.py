@@ -1,5 +1,5 @@
 """
-Main file for the Budge Master App.
+Main file for the Budge Master App..
 This is an app for budget management.
 *** This program needs a 64-bit Python interpreter for ram memory advantage and optimization purposes.
 All the print statements are being used just in the current developing phase for testing and
