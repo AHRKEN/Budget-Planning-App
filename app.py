@@ -13,7 +13,10 @@ import functions as func
 
 # Maybe the next line can be deleted because of the sys.exit() function
 run_app = True
+planning = True
 account_total = 0
+
+print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
 
 while run_app:
 
@@ -22,34 +25,47 @@ while run_app:
     answer = input()
 
     if answer == 'a':
+        planning = True
         print('Select, add or delete category')
 
     elif answer == 'b':
+        planning = True
+
         print('How many?')
         amount = input()
         account_total += float(amount)
 
-        print('Select category:')
-        for i in func.categories:
-            print(i)
+        while planning:
 
-        selected = input()
+            print('Select category:')
+            for i in func.categories.keys():
+                print(i)
 
-        if selected in func.categories:
-            pos = func.categories.index(selected)
+            selected = input()
 
-            print('How many would you like to establish for ' + func.categories[pos] + '?')
-            sub_amount = input()
-            cat = func.categories.pop(pos)
-            cat_amo = cat + ' ' + str(sub_amount)
-            print(cat_amo)
+            if selected in func.categories.keys():
 
-        else:
-            print()
+                print('How many would you like to establish for ' + selected + '?')
+                sub_amount = input()
+                cat_amount = func.categories[selected] = sub_amount
 
-        print()
+            else:
+                print()
+
+            print('Category >> sub amount')
+            for k, v in func.categories.items():
+                print(k + ' >> ' + str(v))
+
+            print('\n(keep) planning\n(main) menu')
+            answer = input()
+
+            if answer == 'keep':
+                continue
+            elif answer == 'main':
+                planning = False
 
     elif answer == 'c':
+        planning = True
         print('Select category')
 
     elif answer == 'quit':

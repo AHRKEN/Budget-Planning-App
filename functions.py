@@ -4,8 +4,34 @@ All print statements are being used just in the current developing phase for tes
 purposes.
 """
 
-categories = ['mortgage', 'car loan', 'groceries']
+global_amount = 0
+category_amount = float
+
+suggested_categories = ['mortgage', 'car loan', 'groceries']
+categories = {'mortgage': 0, 'car loan': 0, 'groceries': 0}
 show_cat = []
+
+
+def add_amount(amount):
+    """
+    A function to add founds to the global amount
+    :param
+    :return:
+    """
+    global global_amount
+    global_amount += amount
+    return global_amount
+
+
+def debit_amount(amount):
+    """
+
+    :param amount:
+    :return:
+    """
+    global category_amount
+    category_amount -= amount
+    return category_amount
 
 
 def percentage_to_amount(perc, amount):
