@@ -17,7 +17,6 @@ planning = True
 account_total = 0
 
 print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
-categories = func.load_plan("plan.json")
 
 while run_app:
 
@@ -27,8 +26,7 @@ while run_app:
 
     if answer == 'a':
         planning = True
-
-        func.plan_budget(planning)
+        print('Select, add or delete category')
 
     elif answer == 'b':
         planning = True
@@ -37,13 +35,39 @@ while run_app:
         amount = input()
         account_total += float(amount)
 
-        func.plan_budget(planning)
+        while planning:
+
+            print('Select category:')
+            for i in func.categories.keys():
+                print(i)
+
+            selected = input()
+
+            if selected in func.categories.keys():
+
+                print('How many would you like to establish for ' + selected + '?')
+                sub_amount = input()
+                cat_amount = func.categories[selected] = sub_amount
+
+            else:
+                print()
+
+            print('Category >> sub amount')
+            for k, v in func.categories.items():
+                print(k + ' >> ' + str(v))
+
+            print('\n(keep) planning\n(main) menu')
+            answer = input()
+
+            if answer == 'keep':
+                continue
+            elif answer == 'main':
+                planning = False
 
     elif answer == 'c':
         planning = True
         print('Select category')
 
     elif answer == 'quit':
-        # save the plan and raise SystemExit
-        func.save_plan(func.categories, "plan.json")
+        # raise SystemExit
         sys.exit()
