@@ -8,46 +8,8 @@ import json
 global_amount = 0
 category_amount = float
 
-#categories = {'mortgage': 0, 'car loan': 0, 'groceries': 0}
-
 
 def load_plan(filename):
-    """
-
-    :return:
-    """
-    """high_score_file = 'plan.txt'
-    try:
-        with open(high_score_file) as hs_file:
-            self.high_score = int(hs_file.read())
-    # If there is no 'high_score.txt' file, then create it
-    except FileNotFoundError:
-        if not os.path.exists(high_score_file):
-            with open(high_score_file, 'w+') as hs_file:
-                hs_file.write('0')
-            self.high_score = 0"""
-    file = open('plan.json')
-    data = file.read()
-    content = json.loads(data)
-    file.close()
-
-    return content
-
-
-def save_plan(data, filename):
-    """
-
-    :return:
-    """
-    file = open(filename, 'w')
-
-    info = json.dumps(data, indent=4)
-    file.write(info)
-
-    file.close()
-
-
-def read_json(filename):
     """
     Returns the contents read from the JSON file filename.
 
@@ -55,9 +17,11 @@ def read_json(filename):
     to covert these contents into a Python data value.  This value will either be a
     a dictionary or a list.
 
-    Parameter filename: The file to read
+    :parameter filename: The file to read
     Precondition: filename is a string, referring to a file that exists, and that file
     is a valid JSON file
+
+    :return:
     """
     file = open(filename)
     data = file.read()
@@ -67,7 +31,7 @@ def read_json(filename):
     return content
 
 
-def write_json(data, filename):
+def save_plan(data, filename):
     """
     Writes the given data out as a JSON file filename.
 
@@ -83,12 +47,14 @@ def write_json(data, filename):
 
     When written, the JSON data should be nicely indented four spaces for readability.
 
-    Parameter data: The Python value to encode as a JSON file
+    :parameter data: The Python value to encode as a JSON file
     Precondition: data is a JSON valid type
 
-    Parameter filename: The file to read
+    :parameter filename: The file to write
     Precondition: filename is a string representing a path to a file with extension
     .json or .JSON.  The file may or may not exist.
+
+    :return:
     """
     file = open(filename, 'w')
 
