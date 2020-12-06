@@ -80,21 +80,21 @@ def plan_budget(planning):
         selected = input()
 
         if selected in categories.keys():
-
-            print('How many would you like to establish for ' + selected + '?')
-            sub_amount = input()
-            categories[selected] = int(sub_amount)
+            categories[selected] = set_sub_amount(selected)
 
         elif selected == 'main':
             planning = False
 
         elif selected[:6] == 'create':
-            categories[selected[7:]] = 0
+            categories[selected[7:]] = set_sub_amount(selected[7:])
             print('A category with the name ' + selected[7:] + ' has been created')
 
-        elif selected[:6] == 'delete': # and selected[7:] in categories.keys:
+        elif selected[:6] == 'delete' and selected[7:] in categories.keys():
             del categories[selected[7:]]
             print('The category with the name ' + selected[7:] + ' has been deleted')
+
+        elif selected[:6] == 'delete' and selected[7:] not in categories.keys():
+            print('There is no category with the name ' + selected[7:])
 
         show_categories()
 
@@ -112,7 +112,7 @@ def show_categories():
 
     :return:
     """
-    print('Category >> sub amount')
+    print('\nCategory >> sub amount')
     for key, value in categories.items():
         print(key + ' >> ' + str(value))
 
@@ -126,6 +126,17 @@ def add_amount(amount):
     global global_amount
     global_amount += amount
     return global_amount
+
+
+def set_sub_amount(category):
+    """
+
+    :param category:
+    :return:
+    """
+    print('How many would you like to establish for ' + category + '?')
+    sub_amount = input()
+    return int(sub_amount)
 
 
 def debit_amount(amount):
@@ -147,11 +158,6 @@ def percentage_to_amount(perc, amount):
 def sub_amount_to_percentage(sub, amount):
     """Return the percentage of the given sub-amount based on 'amount'."""
     return 100 * (sub / amount)
-
-
-def set_categories(amount):
-    for i in categories:
-        show_cat.append(i + str(amount))
 
 
 categories = load_plan("plan.json")
