@@ -72,7 +72,10 @@ def plan_budget(planning):
     while planning:
         show_categories()
 
-        print('Select, type a new or delete a category:\n(main) for Main menu')
+        print('\nWrite (create) and the name of the category to create it\n'
+              'Write (delete) and the name of the category to delete it\n'
+              'Or just write the name of an existing category to set its budget:'
+              '\n(main) for Main menu')
 
         selected = input()
 
@@ -85,23 +88,13 @@ def plan_budget(planning):
         elif selected == 'main':
             planning = False
 
-        else:
-            loop = True
-            while loop:
-                print('There is no category with that name\n'
-                      'Would you like to create a ' + selected + ' category?\n'
-                      '(yes) or (no)')
-                ask = input()
+        elif selected[:6] == 'create':
+            categories[selected[7:]] = 0
+            print('A category with the name ' + selected[7:] + ' has been created')
 
-                if ask == 'yes':
-                    categories[selected] = 0
-                    loop = False
-
-                elif ask == 'no':
-                    loop = False
-
-                else:
-                    continue
+        elif selected[:6] == 'delete': # and selected[7:] in categories.keys:
+            del categories[selected[7:]]
+            print('The category with the name ' + selected[7:] + ' has been deleted')
 
         show_categories()
 
