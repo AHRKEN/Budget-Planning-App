@@ -11,17 +11,16 @@ Date: Oct 18, 2019
 import sys
 import functions as func
 
-# Maybe the next line can be deleted because of the sys.exit() function
-run_app = True
 planning = False
-account_total = 0
 
 print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
+account_total = func.load_total('total.txt')
 categories = func.load_plan("plan.json")
 
-while run_app:
+while True:
 
-    print('What you wanna do?\n' + '(a) verify/plan budget\n' + '(b) add income\n' + '(c) spend\n'
+    print('The total amount left is ' + str(account_total))
+    print('\nWhat you wanna do?\n' + '(a) verify/plan budget\n' + '(b) add income\n' + '(c) spend\n'
           + '(quit) to end program')
     answer = input()
 
@@ -45,5 +44,6 @@ while run_app:
 
     elif answer == 'quit':
         # save the plan and raise SystemExit
+        func.save_plan(account_total, 'total.txt')
         func.save_plan(func.categories, "plan.json")
         sys.exit()

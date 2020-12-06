@@ -9,6 +9,38 @@ global_amount = 0
 category_amount = float
 
 
+def load_total(filename):
+    """
+    Returns the contents read from the text file filename.
+
+    :param filename: the file to read
+    precondition: filename is a string, refering to a file that exists, and that file
+    is a valid text file
+
+    :return: the content in the text file
+    """
+    file = open(filename)
+    data = file.read()
+    file.close()
+
+    return float(data)
+
+
+def save_total(data, filename):
+    """
+    Writes the given data to a text file filename
+
+    :param data:
+    :param filename:
+    :return:
+    """
+    file = open(filename, 'w')
+
+    file.write(data)
+
+    file.close()
+
+
 def load_plan(filename):
     """
     Returns the contents read from the JSON file filename.
@@ -17,11 +49,11 @@ def load_plan(filename):
     to covert these contents into a Python data value.  This value will either be a
     a dictionary or a list.
 
-    :parameter filename: The file to read
-    Precondition: filename is a string, referring to a file that exists, and that file
+    :parameter filename: the file to read
+    precondition: filename is a string, referring to a file that exists, and that file
     is a valid JSON file
 
-    :return:
+    :return: the content in the JSON file
     """
     file = open(filename)
     data = file.read()
@@ -140,7 +172,7 @@ def set_sub_amount(category):
     """
     print('How many would you like to establish for ' + category + '?')
     sub_amount = input()
-    return int(sub_amount)
+    return float(sub_amount)
 
 
 def debit_sub_amount(category, amount):
