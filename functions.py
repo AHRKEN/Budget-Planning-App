@@ -67,7 +67,7 @@ def save_plan(data, filename):
 def plan_budget(planning):
     """
     This functions create a loop to be kept for the planning.
-    :return:
+    :return: Doesn't return anything
     """
     while planning:
         show_categories()
@@ -109,8 +109,9 @@ def plan_budget(planning):
 
 def show_categories():
     """
+    A function to print all categories and their sub-amounts.
 
-    :return:
+    :return: doesn't return anything
     """
     print('\nCategory >> sub amount')
     for key, value in categories.items():
@@ -130,13 +131,26 @@ def add_amount(amount):
 
 def set_sub_amount(category):
     """
+    A function to establish an amount for the selected category
 
-    :param category:
-    :return:
+    :param category: the selected category from the categories dictionary
+    :return: an integer
+    :precondition: category should be a valid category from the 'categories' dictionary
+    or a new one with string type
     """
     print('How many would you like to establish for ' + category + '?')
     sub_amount = input()
     return int(sub_amount)
+
+
+def debit_sub_amount(category, amount):
+    """
+    A function to debit an amount from the category sub amount.
+
+    :return: Doesn't return anything
+    """
+    if category in categories.keys():
+        categories[category]['amount left'] -= amount
 
 
 def debit_amount(amount):

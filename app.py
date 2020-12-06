@@ -13,7 +13,7 @@ import functions as func
 
 # Maybe the next line can be deleted because of the sys.exit() function
 run_app = True
-planning = True
+planning = False
 account_total = 0
 
 print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
