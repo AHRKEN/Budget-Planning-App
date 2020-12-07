@@ -11,32 +11,25 @@ Date: Oct 18, 2019
 import sys
 import functions as func
 
-planning = False
-
-print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
 account_total = func.load_total('total.txt')
+current_income = func.load_total('total.txt')
 categories = func.load_plan("plan.json")
+
+# func.setup()
+print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
 
 while True:
 
-    print('The total amount left is ' + str(account_total))
-    print('\nWhat you wanna do?\n' + '(a) verify/plan budget\n' + '(b) add income\n' + '(c) spend\n'
-          + '(quit) to end program')
-    answer = input()
+    answer = func.main_screen(account_total)
 
     if answer == 'a':
         planning = True
-
-        func.plan_budget(planning)
+        func.plan_budget(planning, categories)
 
     elif answer == 'b':
         planning = True
-
-        print('How many?')
-        amount = input()
-        account_total += float(amount)
-
-        func.plan_budget(planning)
+        func.set_income(account_total)
+        func.plan_budget(planning, categories)
 
     elif answer == 'c':
         planning = True
@@ -45,5 +38,5 @@ while True:
     elif answer == 'quit':
         # save the plan and raise SystemExit
         func.save_plan(account_total, 'total.txt')
-        func.save_plan(func.categories, "plan.json")
+        func.save_plan(categories, "plan.json")
         sys.exit()
