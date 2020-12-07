@@ -1,7 +1,7 @@
 {
-    "mortgage": 400,
-    "car loan": 200,
-    "groceries": 100,
-    "emergencies": 50,
-    "invest": 120
+    "mortgage": [0, 0, 400, 0],
+    "car loan": [0, 0, 200, 0],
+    "groceries": [0, 0, 100, 0],
+    "emergencies": [0, 0, 50, 0],
+    "invest": [0, 0, 120, 0]
 }

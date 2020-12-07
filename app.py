@@ -11,8 +11,8 @@ Date: Oct 18, 2019
 import sys
 import functions as func
 
-account_total = func.load_total('total.txt')
-current_income = func.load_total('total.txt')
+account_total = float(func.load_total('total.txt'))
+current_income = float(func.load_total('total.txt'))
 categories = func.load_plan("plan.json")
 
 # func.setup()
@@ -22,16 +22,16 @@ while True:
 
     answer = func.main_screen(account_total)
 
-    if answer == 'a':
+    if answer == 'a':  # verify or plan budget
         planning = True
         func.plan_budget(planning, categories)
 
-    elif answer == 'b':
+    elif answer == 'b':  # establish new income
         planning = True
         func.set_income(account_total)
         func.plan_budget(planning, categories)
 
-    elif answer == 'c':
+    elif answer == 'c':  # report a spend
         planning = True
         print('Select category')
 

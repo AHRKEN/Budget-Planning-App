@@ -9,6 +9,10 @@ import json
 global_amount = 0
 # category_amount = float
 
+"""
+Main functions
+"""
+
 
 def setup():
     """
@@ -42,6 +46,11 @@ def main_screen(account_total):
     return answer
 
 
+"""
+Functions to establish values
+"""
+
+
 def set_income(account_total):
     """
 
@@ -68,13 +77,15 @@ def plan_budget(planning, categories):
         selected = input()
 
         if selected in categories.keys():
-            categories[selected] = set_sub_amount(selected)
+            answer = decide(selected)
+            amount = input('what ...')
+            categories[selected] = manage_values(categories, selected, answer, amount)
 
         elif selected == 'main':
             planning = False
 
         elif selected[:6] == 'create':
-            categories[selected[7:]] = set_sub_amount(selected[7:])
+            categories[selected[7:]] = decide(selected[7:])
             print('A category with the name ' + selected[7:] + ' has been created')
 
         elif selected[:6] == 'delete' and selected[7:] in categories.keys():
@@ -101,9 +112,47 @@ def show_categories(categories):
 
     :return: doesn't return anything
     """
-    print('\nCategory >> sub amount')
+    print('\nCategory >> total in card >> percentage >> sub amount >> left')
     for key, value in categories.items():
         print(key + ' >> ' + str(value))
+
+
+def decide(category):
+    """
+
+    :return:
+    """
+    print('Would you like to plan the ' + category + ' budget by a (percentage)'
+                                                     'or by an specific (amount)?')
+    answer = input()
+    index = int
+
+    '''if answer == 'percentage':
+        index = 1
+    elif answer == 'amount':
+        index = 2'''
+
+    return answer
+
+
+def manage_values(categories, category, index, amount):
+    """
+    A value manager function.
+
+    :param index:
+    :param amount:
+    :param category:
+    :param categories:
+    :return:
+    """
+    if index == 'card':
+        categories[category][0] = amount
+    elif index == 'percentage':
+        categories[category][1] = amount
+    elif index == 'amount':
+        categories[category][2] = amount
+    elif index == 'left':
+        categories[category][3] = amount
 
 
 def add_amount(amount):
@@ -115,6 +164,20 @@ def add_amount(amount):
     global global_amount
     global_amount += amount
     return global_amount
+
+
+def set_percentage(category):
+    """
+    A function to establish a percentage for the selected category
+
+    :param category: the selected category from the categories dictionary
+    :return: an integer
+    :precondition: category should be a valid category from the 'categories' dictionary
+    or a new one with string type
+    """
+    print('What percentage would you like to establish for ' + category + '?')
+    percentage = input()
+    return float(percentage)
 
 
 def set_sub_amount(category):
@@ -162,12 +225,17 @@ def sub_amount_to_percentage(sub, amount):
     return 100 * (sub / amount)
 
 
+"""
+Functions to load and save files
+"""
+
+
 def load_total(filename):
     """
     Returns the contents read from the text file filename.
 
     :param filename: the file to read
-    precondition: filename is a string, refering to a file that exists, and that file
+    precondition: filename is a string, referring to a file that exists, and that file
     is a valid text file
 
     :return: the content in the text file
