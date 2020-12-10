@@ -10,29 +10,14 @@ global_amount = 0
 # category_amount = float
 
 """
-Main functions
+Main menu function
 """
-
-
-def setup():
-    """
-    Prepares the top 3 variables to be global.
-
-    :return: the total amount available, the current establish income and
-    the dictionary with all the categories.
-    """
-    account_total = load_total('total.txt')
-    current_income = load_total('total.txt')
-    categories = load_plan("plan.json")
-
-    return account_total, current_income, categories
 
 
 def main_screen(account_total):
     """
-    Display the "main screen" of the app showing the global amount (money left),
-     showing the options for the user. Makes the most important variables
-     available to the rest of the functions.
+    Display the "main screen" of the app showing the global amount (money left) and
+    showing the options for the user.
 
     :return: the user command (input) to be evaluated
     """
@@ -53,17 +38,20 @@ Functions to establish values
 
 def set_income(account_total):
     """
+    Ask the user for his or hers current income, add it to account_total and return the income.
 
-    :return:
+    :return: the current income
     """
     print('How much is your current income?')
     amount = input()
     account_total += float(amount)
+    return amount
 
 
 def plan_budget(planning, categories):
     """
-    This functions create a loop to be kept for the planning.
+    Create a loop to be kept for the planning.
+
     :return: Doesn't return anything
     """
     while planning:
