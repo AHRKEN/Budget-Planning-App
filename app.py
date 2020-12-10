@@ -10,32 +10,42 @@ Date: Oct 18, 2019
 import sys
 import functions as func
 
-account_total = float(func.load_total('total.txt'))
-current_income = float(func.load_total('total.txt'))
-categories = func.load_plan("plan.json")
+account_total = float(func.load_total('total.txt')[0])
+current_income = float(func.load_total('total.txt')[1])
+plan_file = func.load_plan("plan.json")
+categories = plan_file[0]
+values = plan_file[1]
+print(current_income)
+# print(values)
+# print(categories)
 
 # func.setup()
 print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
 
-while True:
 
-    answer = func.main_screen(account_total)
+def run_app():
+    while True:
 
-    if answer == 'a':  # verify or plan budget
-        planning = True
-        func.plan_budget(planning, categories)
+        answer = func.main_screen(account_total)
 
-    elif answer == 'b':  # establish new income
-        planning = True
-        income = func.set_income(account_total)
-        func.plan_budget(planning, categories)
+        if answer == 'a':  # verify or plan budget
+            planning = True
+            func.plan_budget(planning, categories, values)
 
-    elif answer == 'c':  # report a spend
-        planning = True
-        print('Select category')
+        elif answer == 'b':  # establish new income
+            planning = True
+            income = func.set_income(account_total)
+            func.plan_budget(planning, categories, values)
 
-    elif answer == 'quit':
-        # save the plan and raise SystemExit
-        func.save_plan(account_total, 'total.txt')
-        func.save_plan(categories, "plan.json")
-        sys.exit()
+        elif answer == 'c':  # report a spend
+            planning = True
+            print('Select category')
+
+        elif answer == 'quit':
+            # save the plan and raise SystemExit
+            func.save_plan(account_total, 'total.txt')
+            func.save_plan(values, "plan.json")
+            sys.exit()
+
+
+run_app()

@@ -4,7 +4,8 @@ All print statements are being used just in the current developing phase for tes
 purposes.
 """
 import json
-
+import numpy as np
+import pandas as pd
 
 global_amount = 0
 # category_amount = float
@@ -48,14 +49,17 @@ def set_income(account_total):
     return amount
 
 
-def plan_budget(planning, categories):
+def plan_budget(planning, categories, values):
     """
     Create a loop to be kept for the planning.
 
+    :param values:
+    :param planning:
+    :param categories:
     :return: Doesn't return anything
     """
     while planning:
-        show_categories(categories)
+        show_categories(categories, values)
 
         print('\nWrite (create) and the name of the category to create it\n'
               'Write (delete) and the name of the category to delete it\n'
@@ -64,10 +68,15 @@ def plan_budget(planning, categories):
 
         selected = input()
 
-        if selected in categories.keys():
-            answer = decide(selected)
-            amount = input('what ...')
-            categories[selected] = manage_values(categories, selected, answer, amount)
+        if selected in categories:
+            print('Would you like to plan the ' + selected + ' budget by a (percentage)'
+                                                             'or by an specific (amount)?\n')
+            answer = input()
+            print('What amount?\n')
+            amount = input()
+
+            index = categories.index(selected)
+            manage_values(values, answer, index, amount)
 
         elif selected == 'main':
             planning = False
@@ -83,7 +92,7 @@ def plan_budget(planning, categories):
         elif selected[:6] == 'delete' and selected[7:] not in categories.keys():
             print('There is no category with the name ' + selected[7:])
 
-        show_categories(categories)
+        show_categories(categories, values)
 
         print('\n(keep) planning\n(main) menu')
         answer = input()
@@ -94,18 +103,20 @@ def plan_budget(planning, categories):
             planning = False
 
 
-def show_categories(categories):
+def show_categories(categories, values):
     """
     A function to print all categories and their sub-amounts.
 
+    :param values:
+    :param categories:
     :return: doesn't return anything
     """
-    print('\nCategory >> total in card >> percentage >> sub amount >> left')
-    for key, value in categories.items():
-        print(key + ' >> ' + str(value))
+    table = pd.DataFrame(values, index=categories)
+
+    print(table)
 
 
-def decide(category):
+def decide(category, values, index):
     """
 
     :return:
@@ -115,32 +126,37 @@ def decide(category):
     answer = input()
     index = int
 
-    '''if answer == 'percentage':
+    if answer == 'percentage':
+        values[answer.title()][index] = 0
         index = 1
     elif answer == 'amount':
-        index = 2'''
+        index = 0
 
-    return answer
+    return index
 
 
-def manage_values(categories, category, index, amount):
+def manage_values(values, answer, index, amount):
     """
     A value manager function.
 
+    :param answer:
+    :param values:
     :param index:
     :param amount:
     :param category:
     :param categories:
     :return:
     """
-    if index == 'card':
+    values[answer.title()][index] = amount
+
+    '''if index == 'card':
         categories[category][0] = amount
     elif index == 'percentage':
         categories[category][1] = amount
     elif index == 'amount':
         categories[category][2] = amount
     elif index == 'left':
-        categories[category][3] = amount
+        categories[category][3] = amount'''
 
 
 def add_amount(amount):
@@ -228,11 +244,13 @@ def load_total(filename):
 
     :return: the content in the text file
     """
-    file = open(filename)
-    data = file.read()
-    file.close()
+    data = []
 
-    return float(data)
+    with open(filename) as file:
+        for line in file:
+            data.append(line.rstrip('\n'))
+
+    return data
 
 
 def save_total(data, filename):

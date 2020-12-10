@@ -1,7 +1,14 @@
-{
-    "mortgage": [0, 0, 400, 0],
-    "car loan": [0, 0, 200, 0],
-    "groceries": [0, 0, 100, 0],
-    "emergencies": [0, 0, 50, 0],
-    "invest": [0, 0, 120, 0]
-}
+[
+    [
+        "car loan",
+        "mortgage",
+        "grocery"
+    ],
+    {
+        "Amount": [0, 0, 0],
+        "Percentage": [0, 0, 0],
+        "Total Left": [0, 0, 0],
+        "In Card": [0, 0, 0],
+        "Cash": [0, 0, 0]
+    }
+]
