@@ -37,29 +37,36 @@ Functions to establish values
 """
 
 
-def set_income(account_total):
+def set_income():
     """
     Ask the user for his or hers current income, add it to account_total and return the income.
 
     :return: the current income
     """
+    amounts = load_total('total.txt')
+    account_total = float(amounts[0])
+
     print('How much is your current income?')
     amount = input()
     account_total += float(amount)
-    return amount
+    amounts = [account_total, float(amount)]
+
+    return amounts
 
 
-def plan_budget(planning, categories, values):
+def plan_budget(planning, amounts, categories, values):
     """
     Create a loop to be kept for the planning.
 
+    :param amounts:
     :param values:
     :param planning:
     :param categories:
     :return: Doesn't return anything
     """
     while planning:
-        show_categories(categories, values)
+        print(amounts)
+        print(prep_table(categories, values))
 
         print('\nWrite (create) and the name of the category to create it\n'
               'Write (delete) and the name of the category to delete it\n'
@@ -69,21 +76,37 @@ def plan_budget(planning, categories, values):
         selected = input()
 
         if selected in categories:
-            print('Would you like to plan the ' + selected + ' budget by a (percentage)'
+            print('Would you like to plan the ' + selected + ' budget by a (percentage) '
                                                              'or by an specific (amount)?\n')
             answer = input()
             print('What amount?\n')
             amount = input()
 
             index = categories.index(selected)
-            manage_values(values, answer, index, amount)
+            manage_values(values, answer, amount, index=index)
+
+            table = prep_table(categories, values)
+            print(table)
 
         elif selected == 'main':
             planning = False
 
         elif selected[:6] == 'create':
-            categories[selected[7:]] = decide(selected[7:])
+            categories.append(selected[7:])
+            print('Would you like to plan the ' + selected[7:] + ' budget by a (percentage) '
+                                                                 'or by an specific (amount)?\n')
+            answer = input()
+            print('What amount?\n')
+            amount = input()
+
+            manage_values(values, answer, amount, new=True)
+
             print('A category with the name ' + selected[7:] + ' has been created')
+
+            table = prep_table(categories, values)
+            print(table)
+
+            # show_table(categories, values)
 
         elif selected[:6] == 'delete' and selected[7:] in categories.keys():
             del categories[selected[7:]]
@@ -92,18 +115,35 @@ def plan_budget(planning, categories, values):
         elif selected[:6] == 'delete' and selected[7:] not in categories.keys():
             print('There is no category with the name ' + selected[7:])
 
-        show_categories(categories, values)
+        #show_table(categories, values)
 
         print('\n(keep) planning\n(main) menu')
-        answer = input()
+        answer1 = input()
 
-        if answer == 'keep':
+        if answer1 == 'keep':
             continue
-        elif answer == 'main':
+        elif answer1 == 'main':
             planning = False
+            print(amounts)
+            return amounts
 
 
-def show_categories(categories, values):
+def prep_table(categories, values, modify=False):
+    """
+
+    :param categories:
+    :param values:
+    :return:
+    """
+    if not modify:
+        new_table = pd.DataFrame(values, index=categories)
+        return new_table
+    '''elif modify:
+        table.append
+        return table'''
+
+
+def show_table(categories, values):
     """
     A function to print all categories and their sub-amounts.
 
@@ -116,7 +156,7 @@ def show_categories(categories, values):
     print(table)
 
 
-def decide(category, values, index):
+def decide(category, values):
     """
 
     :return:
@@ -135,28 +175,35 @@ def decide(category, values, index):
     return index
 
 
-def manage_values(values, answer, index, amount):
+def manage_values(values, answer, amount, index=None, new=False):
     """
     A value manager function.
 
+    :param new:
     :param answer:
     :param values:
     :param index:
     :param amount:
-    :param category:
-    :param categories:
     :return:
     """
-    values[answer.title()][index] = amount
+    if answer.title() not in values:
+        pass
+    if not new:
+        values[answer.title()][index] = float(amount)
+        # then calculate amounts
+    elif new:
+        values[answer.title()].append(float(amount))
+        values['Percentage'].append(0)
+        values['Total Left'].append(0)
+        values['In Card'].append(0)
+        values['Cash'].append(0)
+        print(values[answer.title()])
+        print(values['Percentage'])
+        print(values['Total Left'])
+        print(values['In Card'])
+        print(values['Cash'])
 
-    '''if index == 'card':
-        categories[category][0] = amount
-    elif index == 'percentage':
-        categories[category][1] = amount
-    elif index == 'amount':
-        categories[category][2] = amount
-    elif index == 'left':
-        categories[category][3] = amount'''
+        return values
 
 
 def add_amount(amount):
@@ -261,11 +308,15 @@ def save_total(data, filename):
     :param filename:
     :return:
     """
-    file = open(filename, 'w')
+    print(data)
+    with open(filename, 'w') as file:
+        file.write(str(data[0]) + '\n' + str(data[1]))
+
+    '''file = open(filename, 'w')
 
     file.write(data)
 
-    file.close()
+    file.close()'''
 
 
 def load_plan(filename):
@@ -282,10 +333,14 @@ def load_plan(filename):
 
     :return: the content in the JSON file
     """
-    file = open(filename)
+    with open(filename) as file:
+        data = file.read()
+        content = json.loads(data)
+
+    '''file = open(filename)
     data = file.read()
     content = json.loads(data)
-    file.close()
+    file.close()'''
 
     return content
 
@@ -315,6 +370,7 @@ def save_plan(data, filename):
 
     :return:
     """
+    data = [data[0], data[1]]
     file = open(filename, 'w')
 
     info = json.dumps(data, indent=4)

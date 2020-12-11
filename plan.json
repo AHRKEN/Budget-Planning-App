@@ -2,13 +2,51 @@
     [
         "car loan",
         "mortgage",
-        "grocery"
+        "grocery",
+        "test5",
+        "test2",
+        "ook"
     ],
     {
-        "Amount": [0, 0, 0],
-        "Percentage": [0, 0, 0],
-        "Total Left": [0, 0, 0],
-        "In Card": [0, 0, 0],
-        "Cash": [0, 0, 0]
+        "Amount": [
+            200.0,
+            0,
+            0,
+            40.0,
+            504.0,
+            10.0
+        ],
+        "Percentage": [
+            2,
+            0,
+            0,
+            0,
+            0,
+            10.0
+        ],
+        "Total Left": [
+            3,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "In Card": [
+            4,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        "Cash": [
+            5,
+            0,
+            0,
+            0,
+            0,
+            0
+        ]
     }
 ]
