@@ -15,14 +15,20 @@ Main menu function
 """
 
 
-def main_screen(account_total):
+def main_screen(account_total, current_income):
     """
-    Display the "main screen" of the app showing the global amount (money left) and
-    showing the options for the user.
+    Display the "main screen" of the app, showing the global amount (total money left),
+    the last income (paycheck) and options for the user (through commands).
 
+    parameter account_total: the total amount of all the accounts
+    precondition: is an integer or a float
+
+    parameter current_income: the amount of the last income
+    precondition: is an integer or a float
     :return: the user command (input) to be evaluated
     """
     print('The total amount left is ' + str(account_total))
+    print('Your last income was of ' + str(current_income))
 
     print('\nWhat you wanna do?\n' + '(a) verify/plan budget\n' + '(b) add income\n' + '(c) spend\n'
           + '(quit) to end program')
@@ -37,15 +43,15 @@ Functions to establish values
 """
 
 
-def set_income():
+def set_income(account_total):
     """
     Ask the user for his or hers current income, add it to account_total and return the income.
 
+    parameter account_total: the total amount of all the accounts
+    precondition: is an integer or a float
+
     :return: the current income
     """
-    amounts = load_total('total.txt')
-    account_total = float(amounts[0])
-
     print('How much is your current income?')
     amount = input()
     account_total += float(amount)
@@ -58,14 +64,14 @@ def plan_budget(planning, amounts, categories, values):
     """
     Create a loop to be kept for the planning.
 
-    :param amounts:
-    :param values:
-    :param planning:
-    :param categories:
+    :parameter amounts:
+    :parameter values:
+    :parameter planning:
+    :parameter categories:
     :return: Doesn't return anything
     """
     while planning:
-        print(amounts)
+        # print(amounts)
         print(prep_table(categories, values))
 
         print('\nWrite (create) and the name of the category to create it\n'
@@ -131,8 +137,11 @@ def plan_budget(planning, amounts, categories, values):
 def prep_table(categories, values, modify=False):
     """
 
-    :param categories:
-    :param values:
+    parameter categories:
+    precondition:
+
+    parameter values:
+    precondition:
     :return:
     """
     if not modify:
@@ -190,6 +199,8 @@ def manage_values(values, answer, amount, index=None, new=False):
         pass
     if not new:
         values[answer.title()][index] = float(amount)
+        if answer.title() == 'Percentage':
+            percentage_to_amount(float(amount), )
         # then calculate amounts
     elif new:
         values[answer.title()].append(float(amount))
@@ -267,13 +278,31 @@ def debit_amount(account_total, amount):
 
 
 def percentage_to_amount(perc, amount):
-    """Return the sub amount of the given percentage based on 'amount'."""
-    return amount * (perc / 100)
+    """
+    Return the sub amount of the given percentage based on 'amount'.
+
+    parameter perc:
+    precondition:
+
+    parameter amount:
+    precondition:
+    """
+    sub_amount = amount * (perc / 100)
+    return sub_amount
 
 
 def sub_amount_to_percentage(sub, amount):
-    """Return the percentage of the given sub-amount based on 'amount'."""
-    return 100 * (sub / amount)
+    """
+    Return the percentage of the given sub-amount based on 'amount'.
+
+    parameter sub:
+    precondition:
+
+    parameter amount:
+    precondition:
+    """
+    percentage = 100 * (sub / amount)
+    return percentage
 
 
 """

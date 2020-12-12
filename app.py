@@ -28,9 +28,14 @@ print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a 
 
 
 def run_app():
+    """
+    A management of the global loop.
+    :return:
+    """
+
     while True:
 
-        answer = func.main_screen(account_total)
+        answer = func.main_screen(account_total, current_income)
 
         if answer == 'a':  # verify or plan budget
             planning = True
@@ -38,7 +43,7 @@ def run_app():
 
         elif answer == 'b':  # establish new income
             planning = True
-            amounts_mods = func.set_income()
+            amounts_mods = func.set_income(account_total)
             amounts_2 = func.plan_budget(planning, amounts_mods, categories, values)
 
         elif answer == 'c':  # report a spend
