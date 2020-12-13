@@ -75,9 +75,11 @@ def plan_budget(planning, account_total, current_income, categories, values):
     :return: Doesn't return anything
     """
     while planning:
-        # print(amounts)
+
+        # Display budget plan table (GUI)
         print(prep_table(categories, values))
 
+        # All commands represented between parenthesis represents buttons (GUI)
         print('\nWrite (create) and the name of the category to create it\n'
               'Write (delete) and the name of the category to delete it\n'
               'Or just write the name of an existing category to set its budget:'
@@ -93,7 +95,7 @@ def plan_budget(planning, account_total, current_income, categories, values):
             amount = input()
 
             index = categories.index(selected)
-            manage_values(values, answer, amount, index=index)
+            manage_values(current_income, values, answer, float(amount), index=index)
 
             table = prep_table(categories, values)
             print(table)
@@ -109,7 +111,7 @@ def plan_budget(planning, account_total, current_income, categories, values):
             print('What amount?\n')
             amount = input()
 
-            manage_values(values, answer, amount, new=True)
+            manage_values(current_income, values, answer, amount, new=True)
 
             print('A category with the name ' + selected[7:] + ' has been created')
 
@@ -134,12 +136,13 @@ def plan_budget(planning, account_total, current_income, categories, values):
             continue
         elif answer1 == 'main':
             planning = False
-            print(amounts)
-            return amounts
+            # print(amounts)
+            # return amounts
 
 
 def prep_table(categories, values, modify=False):
     """
+    Prepares a a new table (dataframe)
 
     parameter categories:
     precondition:
@@ -188,10 +191,11 @@ def decide(category, values):
     return index
 
 
-def manage_values(values, answer, amount, index=None, new=False):
+def manage_values(income, values, answer, amount, index=None, new=False):
     """
     A value manager function.
 
+    :param income:
     :param new:
     :param answer:
     :param values:
@@ -204,8 +208,12 @@ def manage_values(values, answer, amount, index=None, new=False):
     if not new:
         values[answer.title()][index] = float(amount)
         if answer.title() == 'Percentage':
-            percentage_to_amount(float(amount), )
-        # then calculate amounts
+            amount = percentage_to_amount(float(amount), income)
+            values['Amount'][index] = round(float(amount), 2)
+            # then calculate the rest of the amounts
+        elif answer.title() == 'Amount':
+            percentage = sub_amount_to_percentage(amount, income)
+            values['Percentage'][index] = round(float(percentage), 2)
     elif new:
         values[answer.title()].append(float(amount))
         values['Percentage'].append(0)
@@ -281,7 +289,7 @@ def debit_amount(account_total, amount):
     return account_total
 
 
-def percentage_to_amount(perc, amount):
+def percentage_to_amount(perc, income):
     """
     Return the sub amount of the given percentage based on 'amount'.
 
@@ -291,11 +299,11 @@ def percentage_to_amount(perc, amount):
     parameter amount:
     precondition:
     """
-    sub_amount = amount * (perc / 100)
+    sub_amount = income * (perc / 100)
     return sub_amount
 
 
-def sub_amount_to_percentage(sub, amount):
+def sub_amount_to_percentage(sub, income):
     """
     Return the percentage of the given sub-amount based on 'amount'.
 
@@ -305,7 +313,7 @@ def sub_amount_to_percentage(sub, amount):
     parameter amount:
     precondition:
     """
-    percentage = 100 * (sub / amount)
+    percentage = 100 * (sub / income)
     return percentage
 
 
