@@ -17,21 +17,22 @@ Main menu function
 
 def main_screen(account_total, current_income):
     """
-    Display the "main screen" of the app, showing the global amount (total money left),
-    the last income (paycheck) and options for the user (through commands).
+    Display the "main screen" of the app, showing the account_total amount,
+    the last income (paycheck) and options for the user (through commands,
+    that later will be GUI buttons).
 
     parameter account_total: the total amount of all the accounts
-    precondition: is an integer or a float
+    precondition: is a float
 
     parameter current_income: the amount of the last income
-    precondition: is an integer or a float
+    precondition: is a float
     :return: the user command (input) to be evaluated
     """
     print('The total amount left is ' + str(account_total))
     print('Your last income was of ' + str(current_income))
 
-    print('\nWhat you wanna do?\n' + '(a) verify/plan budget\n' + '(b) add income\n' + '(c) spend\n'
-          + '(quit) to end program')
+    print('\nWhat you wanna do?\n' + '(a) verify/plan budget\n' +
+          '(b) add income\n' + '(c) spend\n' + '(quit) to end program')
 
     answer = input()
 
@@ -60,13 +61,16 @@ def set_income(account_total):
     return amounts
 
 
-def plan_budget(planning, amounts, categories, values):
+def plan_budget(planning, account_total, current_income, categories, values):
     """
+    This is the heart of the app.
     Create a loop to be kept for the planning.
 
-    :parameter amounts:
+    parameter planning:
+    precondition:
+    parameter amounts:
+    :param planning:
     :parameter values:
-    :parameter planning:
     :parameter categories:
     :return: Doesn't return anything
     """
@@ -312,13 +316,15 @@ Functions to load and save files
 
 def load_total(filename):
     """
-    Returns the contents read from the text file filename.
+    Returns the contents read from the text file filename as a list,
+    that contains 2 strings values.
 
-    :param filename: the file to read
-    precondition: filename is a string, referring to a file that exists, and that file
+    parameter filename: the file to read
+    precondition: filename is a string, referring to a file that exists,
+    and that file
     is a valid text file
 
-    :return: the content in the text file
+    :return: a list with the content in the text file
     """
     data = []
 
@@ -333,8 +339,8 @@ def save_total(data, filename):
     """
     Writes the given data to a text file filename
 
-    :param data:
-    :param filename:
+    :parameter data:
+    :parameter filename:
     :return:
     """
     print(data)
@@ -352,24 +358,19 @@ def load_plan(filename):
     """
     Returns the contents read from the JSON file filename.
 
-    This function reads the contents of the file filename, and will use the json module
-    to covert these contents into a Python data value.  This value will either be a
-    a dictionary or a list.
+    This function reads the contents of the file filename, and will use
+    the json module to covert these contents into a Python data value.
+    This value will either be a dictionary or a list.
 
     :parameter filename: the file to read
-    precondition: filename is a string, referring to a file that exists, and that file
-    is a valid JSON file
+    precondition: filename is a string, referring to a file that exists,
+    and that file is a valid JSON file
 
     :return: the content in the JSON file
     """
     with open(filename) as file:
         data = file.read()
         content = json.loads(data)
-
-    '''file = open(filename)
-    data = file.read()
-    content = json.loads(data)
-    file.close()'''
 
     return content
 
@@ -378,8 +379,8 @@ def save_plan(data, filename):
     """
     Writes the given data out as a JSON file filename.
 
-    To be a proper JSON file, data must be a a JSON valid type.  That is, it must be
-    one of the following:
+    To be a proper JSON file, data must be a a JSON valid type.
+    That is, it must be one of the following:
         (1) a number
         (2) a boolean
         (3) a string
@@ -388,14 +389,15 @@ def save_plan(data, filename):
         (6) a dictionary
     The contents of lists or dictionaries must be JSON valid type.
 
-    When written, the JSON data should be nicely indented four spaces for readability.
+    When written, the JSON data should be nicely indented four spaces
+    for readability.
 
     :parameter data: The Python value to encode as a JSON file
     Precondition: data is a JSON valid type
 
     :parameter filename: The file to write
-    Precondition: filename is a string representing a path to a file with extension
-    .json or .JSON.  The file may or may not exist.
+    Precondition: filename is a string representing a path to a file
+    with extension .json or .JSON.  The file may or may not exist.
 
     :return:
     """
