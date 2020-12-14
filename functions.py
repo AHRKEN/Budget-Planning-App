@@ -7,9 +7,6 @@ import json
 import numpy as np
 import pandas as pd
 
-global_amount = 0
-# category_amount = float
-
 """
 Main menu function
 """
@@ -61,23 +58,21 @@ def set_income(account_total):
     return amounts
 
 
-def plan_budget(planning, account_total, current_income, categories, values):
+def plan_budget(account_total, current_income, table):
     """
     This is the heart of the app.
     Create a loop to be kept for the planning.
 
-    parameter planning:
-    precondition:
-    parameter amounts:
-    :param planning:
-    :parameter values:
-    :parameter categories:
+    :param account_total:
+    :param table:
+    :param current_income:
     :return: Doesn't return anything
     """
-    while planning:
+    while True:
 
         # Display budget plan table (GUI)
-        print(prep_table(categories, values))
+
+        print(table)
 
         # All commands represented between parenthesis represents buttons (GUI)
         print('\nWrite (create) and the name of the category to create it\n'
@@ -87,17 +82,18 @@ def plan_budget(planning, account_total, current_income, categories, values):
 
         selected = input()
 
-        if selected in categories:
+        if selected in table.index:
             print('Would you like to plan the ' + selected + ' budget by a (percentage) '
-                                                             'or by an specific (amount)?\n')
+                                                             'or by an specific (amou nt)?\n')
             answer = input()
             print('What amount?\n')
             amount = input()
 
-            index = categories.index(selected)
-            manage_values(current_income, values, answer, float(amount), index=index)
+            index = table.loc[selected, answer.title()]
+            print(index)
+            manage_values(current_income, table, selected, answer, float(amount))
 
-            table = prep_table(categories, values)
+            # table = prep_table(categories, values)
             print(table)
 
         elif selected == 'main':
@@ -120,14 +116,16 @@ def plan_budget(planning, account_total, current_income, categories, values):
 
             # show_table(categories, values)
 
-        elif selected[:6] == 'delete' and selected[7:] in categories.keys():
-            del categories[selected[7:]]
+        elif selected[:6] == 'delete' and selected[7:] in categories:
+            table.drop(selected[7:], axis=0, inplace=True)
+            # del categories[selected[7:]]
             print('The category with the name ' + selected[7:] + ' has been deleted')
+            print(table)
 
         elif selected[:6] == 'delete' and selected[7:] not in categories.keys():
             print('There is no category with the name ' + selected[7:])
 
-        #show_table(categories, values)
+        # show_table(categories, values)
 
         print('\n(keep) planning\n(main) menu')
         answer1 = input()
@@ -135,9 +133,9 @@ def plan_budget(planning, account_total, current_income, categories, values):
         if answer1 == 'keep':
             continue
         elif answer1 == 'main':
-            planning = False
             # print(amounts)
-            # return amounts
+            amounts = [float(account_total), float(current_income)]
+            return amounts
 
 
 def prep_table(categories, values, modify=False):
@@ -191,10 +189,12 @@ def decide(category, values):
     return index
 
 
-def manage_values(income, values, answer, amount, index=None, new=False):
+def manage_values(income, table, category, answer, amount, new=False):
     """
     A value manager function.
 
+    :param category:
+    :param table:
     :param income:
     :param new:
     :param answer:
@@ -203,17 +203,19 @@ def manage_values(income, values, answer, amount, index=None, new=False):
     :param amount:
     :return:
     """
-    if answer.title() not in values:
+    if answer.title() not in table.columns:
         pass
     if not new:
-        values[answer.title()][index] = float(amount)
+        table.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
-            values['Amount'][index] = round(float(amount), 2)
+            table.loc[category, 'Amount'] = round(float(amount), 2)
             # then calculate the rest of the amounts
         elif answer.title() == 'Amount':
             percentage = sub_amount_to_percentage(amount, income)
-            values['Percentage'][index] = round(float(percentage), 2)
+            table.loc[category, 'Percentage'] = round(float(percentage), 2)
+            # then calculate the rest of the values
+        table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
     elif new:
         values[answer.title()].append(float(amount))
         values['Percentage'].append(0)
@@ -226,7 +228,7 @@ def manage_values(income, values, answer, amount, index=None, new=False):
         print(values['In Card'])
         print(values['Cash'])
 
-        return values
+    return table
 
 
 def add_amount(amount):
@@ -354,12 +356,6 @@ def save_total(data, filename):
     print(data)
     with open(filename, 'w') as file:
         file.write(str(data[0]) + '\n' + str(data[1]))
-
-    '''file = open(filename, 'w')
-
-    file.write(data)
-
-    file.close()'''
 
 
 def load_plan(filename):

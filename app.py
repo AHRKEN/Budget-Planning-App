@@ -18,12 +18,6 @@ current_income = float(amounts[1])
 plan = func.load_plan("plan.json")
 categories = plan[0]
 values = plan[1]
-# print(amounts)
-# print(account_total)
-# print(current_income)
-# print(plan)
-# print(categories)
-# print(values)
 
 # func.setup()
 print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
@@ -37,25 +31,23 @@ def run_app():
 
     while True:
 
+        table = func.prep_table(categories, values)
         answer = func.main_screen(account_total, current_income)
 
         if answer == 'a':
             # this flag activate planning while loop inside plan_budget() function
-            planning = True  # this flag might be discarded
-            amounts_2 = func.plan_budget(planning, account_total, current_income, categories, values)
+            amounts = func.plan_budget(account_total, current_income, table)
 
         elif answer == 'b':
-            planning = True
             amounts_mods = func.set_income(account_total)
-            amounts_2 = func.plan_budget(planning, amounts_mods[0], amounts_mods[1], categories, values)
+            amounts = func.plan_budget(amounts_mods[0], amounts_mods[1], table)
 
         elif answer == 'c':
-            planning = True
             print('Select category')
 
         elif answer == 'quit':
             # save account total, current income, the plan and raise SystemExit
-            func.save_total((amounts_2[0], amounts_2[1]), 'total.txt')
+            func.save_total((amounts[0], amounts[1]), 'total.txt')
             func.save_plan((categories, values), "plan.json")
             sys.exit()
 
