@@ -106,12 +106,15 @@ def plan_budget(account_total, current_income, table):
 
             table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
 
+            save_plan(table, "plan.json")
+
             print('A category with the name ' + selected[7:] + ' has been created')
 
             print(table)
 
         elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
+            save_plan(table, "plan.json")
             print('The category with the name ' + selected[7:] + ' has been deleted')
             print(table)
 
@@ -173,7 +176,6 @@ def manage_values(income, table, category, answer, amount, new=False):
 
     :return:
     """
-
     if not new:
         table.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
@@ -189,8 +191,6 @@ def manage_values(income, table, category, answer, amount, new=False):
         table.loc[category, 'Cash'] = 0
 
     elif new:
-        #dic = {"Amount": 0, "Percentage": 0, "Total Left": 0, "In Card": 0, "Cash": 0}
-
         new_category = pd.DataFrame(columns=table.columns, index=[category])
         new_category.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
@@ -203,11 +203,11 @@ def manage_values(income, table, category, answer, amount, new=False):
         new_category.loc[category, 'Total Left'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'In Card'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'Cash'] = 0.0
-        print('new category')
-        print(new_category)
+        #print('new category')
+        #print(new_category)
         table = pd.concat([table, new_category])  # float(amount)
-        print('table')
-        print(table)
+        #print('table')
+        #print(table)
     elif answer.title() not in table.columns:
         pass
 

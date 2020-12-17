@@ -45,7 +45,6 @@ def run_app():
         elif answer == 'quit':
             # save account total, current income, the plan and raise SystemExit
             func.save_total((amounts[0], amounts[1]), 'total.txt')
-            func.save_plan(table, "plan.json")
             sys.exit()
 
 
