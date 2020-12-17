@@ -104,7 +104,7 @@ def plan_budget(account_total, current_income, table):
             print('What amount?\n')
             amount = input()
 
-            manage_values(current_income, table, selected, answer, amount, new=True)
+            manage_values(current_income, table, selected[7:], answer, amount, new=True)
 
             print('A category with the name ' + selected[7:] + ' has been created')
 
@@ -173,8 +173,7 @@ def manage_values(income, table, category, answer, amount, new=False):
 
     :return:
     """
-    if answer.title() not in table.columns:
-        pass
+
     if not new:
         table.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
@@ -186,20 +185,31 @@ def manage_values(income, table, category, answer, amount, new=False):
             table.loc[category, 'Percentage'] = round(float(percentage), 2)
             # then calculate the rest of the values
         table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
+        table.loc[category, 'In Card'] = table.loc[category, 'Amount']
+        table.loc[category, 'Cash'] = 0
+
     elif new:
-        new_category = pd.DataFrame(table.columns, index=[category])
+        #dic = {"Amount": 0, "Percentage": 0, "Total Left": 0, "In Card": 0, "Cash": 0}
+        new_category = pd.DataFrame(columns=table.columns, index=[category])
         print(new_category)
-        table.append(new_category)  # float(amount)
+        new_category.loc[category, answer.title()] = float(amount)
+        if answer.title() == 'Percentage':
+            amount = percentage_to_amount(float(amount), income)
+            new_category.loc[category, 'Amount'] = round(float(amount), 2)
+        elif answer.title() == 'Amount':
+            percentage = sub_amount_to_percentage(float(amount), income)
+            new_category.loc[category, 'Percentage'] = round(float(percentage), 2)
+
+        new_category.loc[category, 'Total Left'] = new_category.loc[category, 'Amount']
+        new_category.loc[category, 'In Card'] = new_category.loc[category, 'Amount']
+        new_category.loc[category, 'Cash'] = 0.0
+        print('new category')
+        print(new_category)
+        pd.concat([table, new_category])  # float(amount)
+        print('table')
         print(table)
-        #values['Percentage'].append(0)
-        #values['Total Left'].append(0)
-        #values['In Card'].append(0)
-        #values['Cash'].append(0)
-        #print(values[answer.title()])
-        #print(values['Percentage'])
-        #print(values['Total Left'])
-        #print(values['In Card'])
-        #print(values['Cash'])
+    elif answer.title() not in table.columns:
+        pass
 
     return table
 
