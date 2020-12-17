@@ -26,8 +26,6 @@ def run_app():
     # func.setup()
     print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
     table = func.pd.DataFrame(plan)
-    print(table.index)
-    print(table.columns)
 
     while True:
 

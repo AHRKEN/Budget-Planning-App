@@ -104,7 +104,7 @@ def plan_budget(account_total, current_income, table):
             print('What amount?\n')
             amount = input()
 
-            manage_values(current_income, table, selected[7:], answer, amount, new=True)
+            table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
 
             print('A category with the name ' + selected[7:] + ' has been created')
 
@@ -190,8 +190,8 @@ def manage_values(income, table, category, answer, amount, new=False):
 
     elif new:
         #dic = {"Amount": 0, "Percentage": 0, "Total Left": 0, "In Card": 0, "Cash": 0}
+
         new_category = pd.DataFrame(columns=table.columns, index=[category])
-        print(new_category)
         new_category.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
@@ -205,7 +205,7 @@ def manage_values(income, table, category, answer, amount, new=False):
         new_category.loc[category, 'Cash'] = 0.0
         print('new category')
         print(new_category)
-        pd.concat([table, new_category])  # float(amount)
+        table = pd.concat([table, new_category])  # float(amount)
         print('table')
         print(table)
     elif answer.title() not in table.columns:
