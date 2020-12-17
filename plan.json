@@ -1,52 +1,37 @@
-[
-    [
-        "car loan",
-        "mortgage",
-        "grocery",
-        "test5",
-        "test2",
-        "ook"
-    ],
-    {
-        "Amount": [
-            200.0,
-            0,
-            0,
-            40.0,
-            504.0,
-            10.0
-        ],
-        "Percentage": [
-            2,
-            0,
-            0,
-            0,
-            0,
-            10.0
-        ],
-        "Total Left": [
-            3,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        "In Card": [
-            4,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        "Cash": [
-            5,
-            0,
-            0,
-            0,
-            0,
-            0
-        ]
+{
+    "Amount": {
+        "car loan": 200.0,
+        "mortgage": 375.0,
+        "grocery": 120.0,
+        "test5": 40.0,
+        "test2": 504.0
+    },
+    "Percentage": {
+        "car loan": 2.0,
+        "mortgage": 50.68,
+        "grocery": 16.22,
+        "test5": 0.0,
+        "test2": 0.0
+    },
+    "Total Left": {
+        "car loan": 3.0,
+        "mortgage": 375.0,
+        "grocery": 120.0,
+        "test5": 0.0,
+        "test2": 0.0
+    },
+    "In Card": {
+        "car loan": 4,
+        "mortgage": 0,
+        "grocery": 0,
+        "test5": 0,
+        "test2": 0
+    },
+    "Cash": {
+        "car loan": 5,
+        "mortgage": 0,
+        "grocery": 0,
+        "test5": 0,
+        "test2": 0
     }
-]
+}

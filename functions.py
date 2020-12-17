@@ -84,48 +84,39 @@ def plan_budget(account_total, current_income, table):
 
         if selected in table.index:
             print('Would you like to plan the ' + selected + ' budget by a (percentage) '
-                                                             'or by an specific (amou nt)?\n')
+                                                             'or by an specific (amount)?\n')
             answer = input()
             print('What amount?\n')
             amount = input()
 
-            index = table.loc[selected, answer.title()]
-            print(index)
             manage_values(current_income, table, selected, answer, float(amount))
 
-            # table = prep_table(categories, values)
             print(table)
 
         elif selected == 'main':
-            planning = False
+            amounts = [float(account_total), float(current_income)]
+            return amounts
 
         elif selected[:6] == 'create':
-            categories.append(selected[7:])
             print('Would you like to plan the ' + selected[7:] + ' budget by a (percentage) '
                                                                  'or by an specific (amount)?\n')
             answer = input()
             print('What amount?\n')
             amount = input()
 
-            manage_values(current_income, values, answer, amount, new=True)
+            manage_values(current_income, table, selected, answer, amount, new=True)
 
             print('A category with the name ' + selected[7:] + ' has been created')
 
-            table = prep_table(categories, values)
             print(table)
 
-            # show_table(categories, values)
-
-        elif selected[:6] == 'delete' and selected[7:] in categories:
+        elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
-            # del categories[selected[7:]]
             print('The category with the name ' + selected[7:] + ' has been deleted')
             print(table)
 
-        elif selected[:6] == 'delete' and selected[7:] not in categories.keys():
+        elif selected[:6] == 'delete' and selected[7:] not in table.index:
             print('There is no category with the name ' + selected[7:])
-
-        # show_table(categories, values)
 
         print('\n(keep) planning\n(main) menu')
         answer1 = input()
@@ -136,38 +127,6 @@ def plan_budget(account_total, current_income, table):
             # print(amounts)
             amounts = [float(account_total), float(current_income)]
             return amounts
-
-
-def prep_table(categories, values, modify=False):
-    """
-    Prepares a a new table (dataframe)
-
-    parameter categories:
-    precondition:
-
-    parameter values:
-    precondition:
-    :return:
-    """
-    if not modify:
-        new_table = pd.DataFrame(values, index=categories)
-        return new_table
-    '''elif modify:
-        table.append
-        return table'''
-
-
-def show_table(categories, values):
-    """
-    A function to print all categories and their sub-amounts.
-
-    :param values:
-    :param categories:
-    :return: doesn't return anything
-    """
-    table = pd.DataFrame(values, index=categories)
-
-    print(table)
 
 
 def decide(category, values):
@@ -193,14 +152,25 @@ def manage_values(income, table, category, answer, amount, new=False):
     """
     A value manager function.
 
-    :param category:
-    :param table:
-    :param income:
-    :param new:
-    :param answer:
-    :param values:
-    :param index:
-    :param amount:
+    :param income: it's the last establish income
+    precondition: income is a float
+
+    :param table: a pandas dataframe
+    precondition: table is a pandas dataframe
+
+    :param category: the selected category by the user
+    precondition: category is a string based on the dataframe index column
+
+    :param answer: could be percentage or amount (it depends on the user)
+    precondition: answer is a string
+
+    :param amount: the amount for budgeting determined by the user
+    precondition: amount is float
+
+    :param new: it could be False or True depending on the user selection
+    on the main menu
+    precondition: new is a boolean
+
     :return:
     """
     if answer.title() not in table.columns:
@@ -217,16 +187,19 @@ def manage_values(income, table, category, answer, amount, new=False):
             # then calculate the rest of the values
         table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
     elif new:
-        values[answer.title()].append(float(amount))
-        values['Percentage'].append(0)
-        values['Total Left'].append(0)
-        values['In Card'].append(0)
-        values['Cash'].append(0)
-        print(values[answer.title()])
-        print(values['Percentage'])
-        print(values['Total Left'])
-        print(values['In Card'])
-        print(values['Cash'])
+        new_category = pd.DataFrame(table.columns, index=[category])
+        print(new_category)
+        table.append(new_category)  # float(amount)
+        print(table)
+        #values['Percentage'].append(0)
+        #values['Total Left'].append(0)
+        #values['In Card'].append(0)
+        #values['Cash'].append(0)
+        #print(values[answer.title()])
+        #print(values['Percentage'])
+        #print(values['Total Left'])
+        #print(values['In Card'])
+        #print(values['Cash'])
 
     return table
 
@@ -353,7 +326,7 @@ def save_total(data, filename):
     :parameter filename:
     :return:
     """
-    print(data)
+    #print(data)
     with open(filename, 'w') as file:
         file.write(str(data[0]) + '\n' + str(data[1]))
 
@@ -379,7 +352,7 @@ def load_plan(filename):
     return content
 
 
-def save_plan(data, filename):
+def save_plan(table, filename):
     """
     Writes the given data out as a JSON file filename.
 
@@ -396,8 +369,9 @@ def save_plan(data, filename):
     When written, the JSON data should be nicely indented four spaces
     for readability.
 
-    :parameter data: The Python value to encode as a JSON file
-    Precondition: data is a JSON valid type
+    :param table:
+    :parameter table: The Python value to encode as a JSON file
+    Precondition: table is a JSON valid type
 
     :parameter filename: The file to write
     Precondition: filename is a string representing a path to a file
@@ -405,10 +379,13 @@ def save_plan(data, filename):
 
     :return:
     """
-    data = [data[0], data[1]]
     file = open(filename, 'w')
-
-    info = json.dumps(data, indent=4)
+    # Prepare the data to be a valid json format (in this case a nested dict)
+    data = table.to_json()
+    parsed = json.loads(data)
+    #print(parsed)
+    # Organize the data with indentation as 4 spaces
+    info = json.dumps(parsed, indent=4)
     file.write(info)
 
     file.close()
