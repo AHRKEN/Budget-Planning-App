@@ -66,7 +66,7 @@ def plan_budget(account_total, current_income, table):
     :param account_total:
     :param table:
     :param current_income:
-    :return: Doesn't return anything
+    :return: amounts
     """
     while True:
 
@@ -80,17 +80,26 @@ def plan_budget(account_total, current_income, table):
               'Or just write the name of an existing category to set its budget:'
               '\n(main) for Main menu')
 
+        # selected can store a command and a category or just a category.
         selected = input()
 
+        # In case selected is an existing category.
         if selected in table.index:
             print('Would you like to plan the ' + selected + ' budget by a (percentage) '
                                                              'or by an specific (amount)?\n')
+            # -------Possible Refactor start
             answer = input()
-            print('What amount?\n')
-            amount = input()
+            if answer.title() == 'Amount':
+                print('What amount?\n')
+                amount = input()
+                manage_values(current_income, table, selected, answer, float(amount))
+            elif answer.title() == 'Percentage':
+                print('What percentage?\n')
+                amount = input()
+                manage_values(current_income, table, selected, answer, float(amount))
+            # -------Possible Refactor end
 
-            manage_values(current_income, table, selected, answer, float(amount))
-
+            save_plan(table, 'plan.json')
             print(table)
 
         elif selected == 'main':
@@ -101,6 +110,16 @@ def plan_budget(account_total, current_income, table):
             print('Would you like to plan the ' + selected[7:] + ' budget by a (percentage) '
                                                                  'or by an specific (amount)?\n')
             answer = input()
+            if answer.title() == 'Amount':
+                print('What amount?\n')
+                amount = input()
+                table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
+            elif answer.title() == 'Percentage':
+                print('What percentage?\n')
+                amount = input()
+                table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
+
+            save_plan(table, 'plan.json')
             print('What amount?\n')
             amount = input()
 
@@ -114,6 +133,7 @@ def plan_budget(account_total, current_income, table):
 
         elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
+            save_plan(table, 'plan.json')
             save_plan(table, "plan.json")
             print('The category with the name ' + selected[7:] + ' has been deleted')
             print(table)
@@ -174,9 +194,11 @@ def manage_values(income, table, category, answer, amount, new=False):
     on the main menu
     precondition: new is a boolean
 
-    :return:
+    :return: table
     """
     if not new:
+        # Write an if, elif, else chain to evaluate if the user is available to set an amount
+        # Subtract the available amount from the current_income to be assigned to the selected category
         table.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
@@ -185,13 +207,16 @@ def manage_values(income, table, category, answer, amount, new=False):
         elif answer.title() == 'Amount':
             percentage = sub_amount_to_percentage(amount, income)
             table.loc[category, 'Percentage'] = round(float(percentage), 2)
-            # then calculate the rest of the values
+            # then calculate the rest of the values of the table dataframe
         table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
         table.loc[category, 'In Card'] = table.loc[category, 'Amount']
         table.loc[category, 'Cash'] = 0
 
     elif new:
+
         new_category = pd.DataFrame(columns=table.columns, index=[category])
+        # Write an if, elif, else chain to evaluate if the user is available to set an amount
+        # Subtract the available amount from the current_income to be assigned to the selected category
         new_category.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
@@ -309,13 +334,12 @@ Functions to load and save files
 
 def load_total(filename):
     """
-    Returns the contents read from the text file filename as a list,
+    Returns the contents read from the text file 'total.txt' filename as a list,
     that contains 2 strings values.
 
     parameter filename: the file to read
     precondition: filename is a string, referring to a file that exists,
-    and that file
-    is a valid text file
+    and that file is a valid text file
 
     :return: a list with the content in the text file
     """
@@ -358,7 +382,7 @@ def load_plan(filename):
     with open(filename) as file:
         data = file.read()
         content = json.loads(data)
-
+        #print("This is the content return: \n" + str(content))
     return content
 
 
