@@ -120,6 +120,13 @@ def plan_budget(account_total, current_income, table):
                 table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
 
             save_plan(table, 'plan.json')
+            print('What amount?\n')
+            amount = input()
+
+            table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
+
+            save_plan(table, "plan.json")
+
             print('A category with the name ' + selected[7:] + ' has been created')
 
             print(table)
@@ -127,6 +134,7 @@ def plan_budget(account_total, current_income, table):
         elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
             save_plan(table, 'plan.json')
+            save_plan(table, "plan.json")
             print('The category with the name ' + selected[7:] + ' has been deleted')
             print(table)
 
@@ -188,7 +196,6 @@ def manage_values(income, table, category, answer, amount, new=False):
 
     :return: table
     """
-
     if not new:
         # Write an if, elif, else chain to evaluate if the user is available to set an amount
         # Subtract the available amount from the current_income to be assigned to the selected category
@@ -221,11 +228,11 @@ def manage_values(income, table, category, answer, amount, new=False):
         new_category.loc[category, 'Total Left'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'In Card'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'Cash'] = 0.0
-        print('new category')
-        print(new_category)
+        #print('new category')
+        #print(new_category)
         table = pd.concat([table, new_category])  # float(amount)
-        print('table')
-        print(table)
+        #print('table')
+        #print(table)
     elif answer.title() not in table.columns:
         pass
 
