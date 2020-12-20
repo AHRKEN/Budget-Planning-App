@@ -1,37 +1,37 @@
 {
     "Amount": {
-        "car loan": 50.0,
-        "mortgage": 375.0,
+        "car loan": 150.0,
+        "mortgage": 400.0,
         "grocery": 120.0,
-        "test2": 504.0,
+        "test2": 35.0,
         "rent": 185.0
     },
     "Percentage": {
-        "car loan": 6.76,
-        "mortgage": 50.68,
+        "car loan": 20.27,
+        "mortgage": 54.05,
         "grocery": 16.22,
-        "test2": 0.0,
+        "test2": 4.73,
         "rent": 25.0
     },
     "In Card": {
-        "car loan": 50.0,
-        "mortgage": 0.0,
-        "grocery": 0.0,
-        "test2": 0.0,
+        "car loan": 150.0,
+        "mortgage": 400.0,
+        "grocery": 120.0,
+        "test2": 35.0,
         "rent": 185.0
     },
     "Cash": {
-        "car loan": 0,
-        "mortgage": 0,
-        "grocery": 0,
-        "test2": 0,
+        "car loan": 0.0,
+        "mortgage": 0.0,
+        "grocery": 0.0,
+        "test2": 0.0,
         "rent": 0.0
     },
     "Cat. Tot. Bal.": {
-        "car loan": 50.0,
-        "mortgage": 375.0,
+        "car loan": 150.0,
+        "mortgage": 400.0,
         "grocery": 120.0,
-        "test2": 0.0,
+        "test2": 35.0,
         "rent": 185.0
     }
 }

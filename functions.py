@@ -208,9 +208,9 @@ def manage_values(income, table, category, answer, amount, new=False):
             percentage = sub_amount_to_percentage(amount, income)
             table.loc[category, 'Percentage'] = round(float(percentage), 2)
             # then calculate the rest of the values of the table dataframe
-        table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
         table.loc[category, 'In Card'] = table.loc[category, 'Amount']
         table.loc[category, 'Cash'] = 0
+        table.loc[category, 'Cat. Tot. Bal.'] += table.loc[category, 'Amount']
 
     elif new:
 
@@ -225,14 +225,12 @@ def manage_values(income, table, category, answer, amount, new=False):
             percentage = sub_amount_to_percentage(float(amount), income)
             new_category.loc[category, 'Percentage'] = round(float(percentage), 2)
 
-        new_category.loc[category, 'Total Left'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'In Card'] = new_category.loc[category, 'Amount']
         new_category.loc[category, 'Cash'] = 0.0
-        #print('new category')
-        #print(new_category)
+        new_category.loc[category, 'Cat. Tot. Bal.'] = new_category.loc[category, 'Amount']
+
         table = pd.concat([table, new_category])  # float(amount)
-        #print('table')
-        #print(table)
+        
     elif answer.title() not in table.columns:
         pass
 
