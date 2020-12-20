@@ -13,13 +13,6 @@
         "test2": 0.0,
         "rent": 25.0
     },
-    "Total Left": {
-        "car loan": 53.0,
-        "mortgage": 375.0,
-        "grocery": 120.0,
-        "test2": 0.0,
-        "rent": 185.0
-    },
     "In Card": {
         "car loan": 50.0,
         "mortgage": 0.0,
@@ -33,5 +26,12 @@
         "grocery": 0,
         "test2": 0,
         "rent": 0.0
+    },
+    "Cat. Tot. Bal.": {
+        "car loan": 50.0,
+        "mortgage": 375.0,
+        "grocery": 120.0,
+        "test2": 0.0,
+        "rent": 185.0
     }
 }
