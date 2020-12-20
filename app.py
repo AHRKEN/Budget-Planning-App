@@ -14,13 +14,16 @@ import functions as func
 def run_app():
     """
     A management of the main loop.
-    :return:
+    :return: This is a procedure (unfruitful function)
     """
+
+    # amounts variable stores a list with 2 strings elements.
     amounts = func.load_total('total.txt')
-    # account_total include the sum of all money in the user account(s)
+    # account_total includes the sum of all money in the user account(s)
     account_total = float(amounts[0])
     # user last income
     current_income = float(amounts[1])
+    # ' plan.json' is a 2 dimensional dictionary.
     plan = func.load_plan("plan.json")
 
     # func.setup()
@@ -29,6 +32,8 @@ def run_app():
 
     while True:
 
+        # User initial input (a), (b), (c) or (quit)
+        # These commands will be applied as buttons.
         answer = func.main_screen(account_total, current_income)
 
         if answer == 'a':
