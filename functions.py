@@ -120,12 +120,6 @@ def plan_budget(account_total, current_income, table):
                 table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
 
             save_plan(table, 'plan.json')
-            print('What amount?\n')
-            amount = input()
-
-            table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
-
-            save_plan(table, "plan.json")
 
             print('A category with the name ' + selected[7:] + ' has been created')
 
@@ -230,7 +224,7 @@ def manage_values(income, table, category, answer, amount, new=False):
         new_category.loc[category, 'Cat. Tot. Bal.'] = new_category.loc[category, 'Amount']
 
         table = pd.concat([table, new_category])  # float(amount)
-        
+
     elif answer.title() not in table.columns:
         pass
 

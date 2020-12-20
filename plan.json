@@ -4,34 +4,39 @@
         "mortgage": 400.0,
         "grocery": 120.0,
         "test2": 35.0,
-        "rent": 185.0
+        "rent": 185.0,
+        "hangout": 30.0
     },
     "Percentage": {
         "car loan": 20.27,
         "mortgage": 54.05,
         "grocery": 16.22,
         "test2": 4.73,
-        "rent": 25.0
+        "rent": 25.0,
+        "hangout": 4.05
     },
     "In Card": {
         "car loan": 150.0,
         "mortgage": 400.0,
         "grocery": 120.0,
         "test2": 35.0,
-        "rent": 185.0
+        "rent": 185.0,
+        "hangout": 30.0
     },
     "Cash": {
         "car loan": 0.0,
         "mortgage": 0.0,
         "grocery": 0.0,
         "test2": 0.0,
-        "rent": 0.0
+        "rent": 0.0,
+        "hangout": 0.0
     },
     "Cat. Tot. Bal.": {
         "car loan": 150.0,
         "mortgage": 400.0,
         "grocery": 120.0,
         "test2": 35.0,
-        "rent": 185.0
+        "rent": 185.0,
+        "hangout": 30.0
     }
 }
