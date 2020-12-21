@@ -71,8 +71,9 @@ def plan_budget(account_total, current_income, table):
     while True:
 
         # Display budget plan table (GUI)
-
+        total = unmanaged_and_total(current_income, table)
         print(table)
+        print(total)
 
         # All commands represented between parenthesis represents buttons (GUI)
         print('\nWrite (create) and the name of the category to create it\n'
@@ -90,8 +91,9 @@ def plan_budget(account_total, current_income, table):
             amount = input()
 
             manage_values(current_income, table, selected, answer, float(amount))
-
+            total = unmanaged_and_total(current_income, table)
             print(table)
+            print(total)
 
         elif selected == 'main':
             amounts = [float(account_total), float(current_income)]
@@ -101,14 +103,6 @@ def plan_budget(account_total, current_income, table):
             print('Would you like to plan the ' + selected[7:] + ' budget by a (percentage) '
                                                                  'or by an specific (amount)?\n')
             answer = input()
-
-            print('What amount?\n')
-            amount = input()
-
-            table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
-
-            save_plan(table, "plan.json")
-
             if answer.title() == 'Amount':
                 print('What amount?\n')
                 amount = input()
@@ -117,13 +111,13 @@ def plan_budget(account_total, current_income, table):
                 print('What percentage?\n')
                 amount = input()
                 table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
-
+                total = unmanaged_and_total(current_income, table)
             save_plan(table, 'plan.json')
 
 
             print('A category with the name ' + selected[7:] + ' has been created')
-
             print(table)
+            print(total)
 
         elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
@@ -375,6 +369,31 @@ def load_plan(filename):
         content = json.loads(data)
 
     return content
+
+
+def unmanaged_and_total(current_income, table):
+    """
+    This function keeps track of user total managed currency and total
+    unmanaged currency.
+    :param current_income: last income added to account
+    :param table: latest version of the dataframe table
+    :return: Unmanaged and Total rows as a single DataFrame 2x5
+    """
+    # The sum of every column of table DataFrame for every column of total_row column wise.
+    total_row = pd.DataFrame(table.sum()).T
+    # Adding renaming the index label of total_row DataFrame.
+    total_row.rename(index={0: 'Total'}, inplace=True)
+    # Generating a 1x5 row vector with the unmanaged current_income amount and its representation
+    # in percentage.
+    unmanaged_income = pd.DataFrame(index=['Unmanaged'], columns=table.columns)
+    # Placing the unmanaged current_income balance it the unmanaged_income amount column.
+    unmanaged_income['Amount'] = current_income - total_row.loc['Total', 'Amount']
+    # Placing unmanaged_income as percentage representation in unmanaged_income percentage column.
+    unmanaged_income['Percentage'] = 100 - total_row.loc['Total', 'Percentage']
+    # Concatenating unmanaged_income and total_row row vectors together.
+    unm_and_total = pd.concat([unmanaged_income, total_row])
+
+    return unm_and_total
 
 
 def save_plan(table, filename):
