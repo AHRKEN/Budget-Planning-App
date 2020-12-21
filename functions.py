@@ -66,13 +66,14 @@ def plan_budget(account_total, current_income, table):
     :param account_total:
     :param table:
     :param current_income:
-    :return: amounts
+    :return: Doesn't return anything
     """
     while True:
 
         # Display budget plan table (GUI)
-
+        total = unmanaged_and_total(current_income, table)
         print(table)
+        print(total)
 
         # All commands represented between parenthesis represents buttons (GUI)
         print('\nWrite (create) and the name of the category to create it\n'
@@ -80,27 +81,19 @@ def plan_budget(account_total, current_income, table):
               'Or just write the name of an existing category to set its budget:'
               '\n(main) for Main menu')
 
-        # selected can store a command and a category or just a category.
         selected = input()
 
-        # In case selected is an existing category.
         if selected in table.index:
             print('Would you like to plan the ' + selected + ' budget by a (percentage) '
                                                              'or by an specific (amount)?\n')
-            # -------Possible Refactor start
             answer = input()
-            if answer.title() == 'Amount':
-                print('What amount?\n')
-                amount = input()
-                manage_values(current_income, table, selected, answer, float(amount))
-            elif answer.title() == 'Percentage':
-                print('What percentage?\n')
-                amount = input()
-                manage_values(current_income, table, selected, answer, float(amount))
-            # -------Possible Refactor end
+            print('What amount?\n')
+            amount = input()
 
-            save_plan(table, 'plan.json')
+            manage_values(current_income, table, selected, answer, float(amount))
+            total = unmanaged_and_total(current_income, table)
             print(table)
+            print(total)
 
         elif selected == 'main':
             amounts = [float(account_total), float(current_income)]
@@ -118,16 +111,16 @@ def plan_budget(account_total, current_income, table):
                 print('What percentage?\n')
                 amount = input()
                 table = manage_values(current_income, table, selected[7:], answer, amount, new=True)
-
+                total = unmanaged_and_total(current_income, table)
             save_plan(table, 'plan.json')
 
-            print('A category with the name ' + selected[7:] + ' has been created')
 
+            print('A category with the name ' + selected[7:] + ' has been created')
             print(table)
+            print(total)
 
         elif selected[:6] == 'delete' and selected[7:] in table.index:
             table.drop(selected[7:], axis=0, inplace=True)
-            save_plan(table, 'plan.json')
             save_plan(table, "plan.json")
             print('The category with the name ' + selected[7:] + ' has been deleted')
             print(table)
@@ -188,11 +181,9 @@ def manage_values(income, table, category, answer, amount, new=False):
     on the main menu
     precondition: new is a boolean
 
-    :return: table
+    :return:
     """
     if not new:
-        # Write an if, elif, else chain to evaluate if the user is available to set an amount
-        # Subtract the available amount from the current_income to be assigned to the selected category
         table.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
@@ -201,16 +192,17 @@ def manage_values(income, table, category, answer, amount, new=False):
         elif answer.title() == 'Amount':
             percentage = sub_amount_to_percentage(amount, income)
             table.loc[category, 'Percentage'] = round(float(percentage), 2)
+
+            # then calculate the rest of the values
+        table.loc[category, 'Total Left'] += table.loc[category, 'Amount']
+
             # then calculate the rest of the values of the table dataframe
         table.loc[category, 'In Card'] = table.loc[category, 'Amount']
         table.loc[category, 'Cash'] = 0
         table.loc[category, 'Cat. Tot. Bal.'] += table.loc[category, 'Amount']
 
     elif new:
-
         new_category = pd.DataFrame(columns=table.columns, index=[category])
-        # Write an if, elif, else chain to evaluate if the user is available to set an amount
-        # Subtract the available amount from the current_income to be assigned to the selected category
         new_category.loc[category, answer.title()] = float(amount)
         if answer.title() == 'Percentage':
             amount = percentage_to_amount(float(amount), income)
@@ -326,12 +318,13 @@ Functions to load and save files
 
 def load_total(filename):
     """
-    Returns the contents read from the text file 'total.txt' filename as a list,
+    Returns the contents read from the text file filename as a list,
     that contains 2 strings values.
 
     parameter filename: the file to read
     precondition: filename is a string, referring to a file that exists,
-    and that file is a valid text file
+    and that file
+    is a valid text file
 
     :return: a list with the content in the text file
     """
@@ -374,8 +367,33 @@ def load_plan(filename):
     with open(filename) as file:
         data = file.read()
         content = json.loads(data)
-        #print("This is the content return: \n" + str(content))
+
     return content
+
+
+def unmanaged_and_total(current_income, table):
+    """
+    This function keeps track of user total managed currency and total
+    unmanaged currency.
+    :param current_income: last income added to account
+    :param table: latest version of the dataframe table
+    :return: Unmanaged and Total rows as a single DataFrame 2x5
+    """
+    # The sum of every column of table DataFrame for every column of total_row column wise.
+    total_row = pd.DataFrame(table.sum()).T
+    # Adding renaming the index label of total_row DataFrame.
+    total_row.rename(index={0: 'Total'}, inplace=True)
+    # Generating a 1x5 row vector with the unmanaged current_income amount and its representation
+    # in percentage.
+    unmanaged_income = pd.DataFrame(index=['Unmanaged'], columns=table.columns)
+    # Placing the unmanaged current_income balance it the unmanaged_income amount column.
+    unmanaged_income['Amount'] = current_income - total_row.loc['Total', 'Amount']
+    # Placing unmanaged_income as percentage representation in unmanaged_income percentage column.
+    unmanaged_income['Percentage'] = 100 - total_row.loc['Total', 'Percentage']
+    # Concatenating unmanaged_income and total_row row vectors together.
+    unm_and_total = pd.concat([unmanaged_income, total_row])
+
+    return unm_and_total
 
 
 def save_plan(table, filename):

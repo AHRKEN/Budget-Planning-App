@@ -6,7 +6,8 @@
         "test2": 35.0,
         "rent": 185.0,
         "hangout": 30.0,
-        "cellphone": 40.0
+        "cellphone": 40.0,
+        "father": 111.0
     },
     "Percentage": {
         "car loan": 20.27,
@@ -15,7 +16,8 @@
         "test2": 4.73,
         "rent": 25.0,
         "hangout": 4.05,
-        "cellphone": 5.41
+        "cellphone": 5.41,
+        "father": 15.0
     },
     "In Card": {
         "car loan": 150.0,
@@ -24,7 +26,8 @@
         "test2": 35.0,
         "rent": 185.0,
         "hangout": 30.0,
-        "cellphone": 40.0
+        "cellphone": 40.0,
+        "father": 111.0
     },
     "Cash": {
         "car loan": 0.0,
@@ -33,7 +36,8 @@
         "test2": 0.0,
         "rent": 0.0,
         "hangout": 0.0,
-        "cellphone": 0.0
+        "cellphone": 0.0,
+        "father": 0.0
     },
     "Cat. Tot. Bal.": {
         "car loan": 150.0,
@@ -42,6 +46,7 @@
         "test2": 35.0,
         "rent": 185.0,
         "hangout": 30.0,
-        "cellphone": 40.0
+        "cellphone": 40.0,
+        "father": 111.0
     }
 }
