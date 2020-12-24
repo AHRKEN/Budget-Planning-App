@@ -25,7 +25,11 @@ def run_app():
 
     # func.setup()
     print('Welcome to BudgeMaster!\nWhere planning budget is as easy like chewing a gum.\n')
+    # Display a daily tip.
+
     table = func.pd.DataFrame(plan)
+    total_table = func.unmanaged_and_total(current_income, table)
+    # A function that remind the user if he/she has unmanaged balance.
 
     while True:
 
